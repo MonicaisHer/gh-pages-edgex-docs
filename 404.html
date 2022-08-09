@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>404 Not Found</title>
-  <script>
-      const latestAlias = "latest";
-      let version = window.location.pathname.split("/")[1];
-      if(version!=latestAlias)
-        return;
+    <title>404 Not Found</title>
+    <script>
+        function redirectLatest()
+        {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/versions.json");
+            xhr.onload = function () {
+                let versions = JSON.parse(this.responseText);
 
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET", "/versions.json");
-      xhr.onload = function () {
-          let versions = JSON.parse(this.responseText);
+                // find the version by alias
+                let res = versions.find(it => {
+                    return it["aliases"].find(alias => {
+                        return alias == "latest";
+                    });
+                });
 
-          let res = versions.find(it => {
-              return it["aliases"].find(alias => {
-                  return alias == latestAlias;
-              });
-          });
+                if (res && res.version) {
+                    let pathParts = window.location.pathname.split("/");
+                    // replace the alias with version
+                    pathParts[1] = res.version;
+                    window.location.pathname = pathParts.join("/");
+                } else {
+                    console.error("Unable to find version with 'latest' alias.");
+                    return;
+                }
+            };
 
-          if (res && res.version) {
-              let pathParts = window.location.pathname.split("/");
-              // replace the alias with version
-              pathParts[1] = res.version;
-              window.location.pathname = pathParts.join("/");
-          } else {
-              console.error("Unable to find version with 'latest' alias.");
-              return;
-          }
-      };
+            xhr.send();
+        }
 
-      xhr.send();
-  </script>
+        if(window.location.pathname.split("/")[1]=="latest")
+        {
+            redirectLatest();
+        }
+    </script>
 </head>
 <body>
     <h1>404 Not Found</h1>
