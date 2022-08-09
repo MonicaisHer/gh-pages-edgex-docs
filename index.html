@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Redirecting</title>
-  <script>
-    window.location.replace("2.2");
-  </script>
+    <title>Redirecting</title>
+    <script>
+        const LatestAlias = "latest";
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "versions.json");
+        xhr.onload = function () {
+            let versions = JSON.parse(this.responseText);
+
+            let res = versions.find(it => {
+                return it["aliases"].find(alias => {
+                    return alias == LatestAlias; });
+            });
+
+            if (!res) {
+                alert("The requested version was not found. To visit the latest documentation, please follow https://docs.edgexfoundry.org/latest");
+            }
+
+            if (res.version) {
+                window.location.replace(res.version);
+            }
+        };
+        xhr.send();
+    </script>
 </head>
 <body>
 </body>
