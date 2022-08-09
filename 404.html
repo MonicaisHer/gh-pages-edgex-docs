@@ -6,7 +6,7 @@
       let currentAlias = window.location.pathname.split("/")[1];
 
       let xhr = new XMLHttpRequest();
-      xhr.open("GET", "versions.json");
+      xhr.open("GET", "/versions.json");
       xhr.onload = function () {
           let versions = JSON.parse(this.responseText);
 
