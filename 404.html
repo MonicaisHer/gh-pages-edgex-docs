@@ -26,7 +26,7 @@
 
               // split[1] = res.version;
               split[2] = res.version;
-              let targetPath = split.join('');
+              let targetPath = split.join("/");
               window.location.pathname = targetPath;
           } else {
               alert("The requested page was not found. To visit the latest documentation, please follow https://docs.edgexfoundry.org/latest");
