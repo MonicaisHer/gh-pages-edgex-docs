@@ -5,10 +5,11 @@
     <script>
         function redirectLatest()
         {
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "/versions.json");
-            xhr.onload = function () {
-                let versions = JSON.parse(this.responseText);
+            let req = new XMLHttpRequest();
+            req.open("GET", "/versions.json", false);
+            req.send();
+            if(req.status === 200){
+                let versions = JSON.parse(req.responseText);
 
                 // find the version by alias
                 let res = versions.find(it => {
@@ -26,13 +27,10 @@
                     console.error("Unable to find version with 'latest' alias.");
                     return;
                 }
-            };
-
-            xhr.send();
+            }
         }
 
-        if(window.location.pathname.split("/")[1]=="latest")
-        {
+        if(window.location.pathname.split("/")[1]=="latest"){
             redirectLatest();
         }
     </script>
