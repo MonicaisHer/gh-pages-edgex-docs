@@ -3,7 +3,11 @@
 <head>
   <title>Redirecting</title>
   <script>
-      let currentAlias = window.location.pathname.split("/")[1];
+      // The positions of versions in pathname are different between this gh-pages and upstream. e.g.
+      // - https://monicaisher.github.io/gh-pages-edgex-docs/2.1
+      // - https://docs.edgexfoundry.org/2.1
+      // let currentAlias = window.location.pathname.split("/")[1];
+      let currentAlias = window.location.pathname.split("/")[2];
 
       let xhr = new XMLHttpRequest();
       xhr.open("GET", "versions.json");
